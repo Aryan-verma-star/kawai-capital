@@ -1,0 +1,12 @@
+{
+  "chart": {
+    "result": [
+      {
+        "meta": { "regularMarketPrice": 24102.35, "regularMarketTime": 1788657000 },
+        "timestamp": [1788570600, 1788657000],
+        "indicators": { "quote": [{ "close": [23897.7, 24102.35] }] }
+      }
+    ],
+    "error": null
+  }
+}

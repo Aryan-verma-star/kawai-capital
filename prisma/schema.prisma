@@ -1,0 +1,118 @@
+// KAVACH — operational state (SQLite).
+// The DB holds operational state: sessions, news articles, radar events,
+// the durable approval queue, the AI-call audit/budget counter, and daily
+// book snapshots for resume. Evidence lives in the hash-chained JSONL
+// flight recorder under data/flightrecorder/ — the two are deliberately
+// distinct (see README: "the DB is state, the recorder is proof").
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// One replay or live-paper run.
+model KavachSession {
+  id           String   @id @default(cuid())
+  kind         String // 'replay' | 'live'
+  scenario     String? // TANTRUM-13 | ILFS-18 | COVID-20 (replay only)
+  mode         String // naive | governed | both (replay), governed (live)
+  seed         Int      @default(42)
+  autonomy     String   @default("FULL")
+  status       String   @default("RUNNING") // RUNNING | COMPLETE | STOPPED
+  day          Int      @default(0)
+  navCr        Float?
+  recorderFile String?
+  headHash     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+/// Ingested news article (dedupe key = sha256 of canonicalized URL).
+model Article {
+  id          String    @id @default(cuid())
+  urlHash     String    @unique
+  url         String
+  title       String
+  source      String
+  provider    String // googlenews | gdelt | gnews | marketaux | finnhub
+  publishedAt DateTime?
+  fetchedAt   DateTime  @default(now())
+  snippet     String?
+  sentiment   Float?
+  dedupeKey   String // normalized title key for near-duplicate detection
+}
+
+/// Radar event persisted for audit + feed (JSON strings: SQLite has no arrays).
+model RadarEventRow {
+  id         String   @id @default(cuid())
+  sessionId  String?
+  day        Int      @default(0)
+  event      String
+  severity   Int
+  buckets    String // JSON array of bucket ids
+  direction  String
+  confidence Float
+  sourceUrl  String?
+  provider   String // dictionary | gemini | gemini-rejected
+  applied    Boolean  @default(false)
+  createdAt  DateTime @default(now())
+}
+
+/// Durable pending approval queue — survives restarts.
+model ApprovalRow {
+  id               String   @id
+  sessionId        String
+  day              Int
+  deadlineDay      Int
+  bucket           String
+  valueCr          Float
+  direction        Int
+  regime           String
+  origin           String   @default("optimizer") // optimizer | ai_advisor
+  articlesJson     String // JSON array
+  counterfactualJson String // JSON object
+  tradeJson        String? // stashed TradeIntent (JSON) while PENDING
+  status           String   @default("PENDING") // PENDING | APPROVED | REJECTED | TIMEOUT
+  decidedBy        String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+/// Every AI call: budget counter (per IST day) + model-risk audit trail.
+model AiCall {
+  id             String   @id @default(cuid())
+  role           String // radar | advisor | critic | narrator | probe
+  model          String
+  promptHash     String
+  latencyMs      Int
+  inputTokens    Int?
+  outputTokens   Int?
+  outcome        String // ok | fallback | rejected | timeout | rate_limited | nokey | budget
+  fallbackReason String?
+  callDate       String // YYYY-MM-DD (IST) — the budget bucket key
+  /// True only when a real network attempt against the Gemini API was made.
+  /// nokey / breaker-open / budget-gate / probe rows are audited but must NOT
+  /// consume the daily quota (they cost nothing on the provider side).
+  counted        Boolean  @default(false)
+  createdAt      DateTime @default(now())
+}
+
+/// Daily live-book snapshot (resume + NAV chart across restarts).
+model BookSnapshot {
+  id          String   @id @default(cuid())
+  sessionId   String
+  day         Int
+  navCr       Float
+  grossCr     Float?
+  cashCr      Float?
+  borrowCr    Float?
+  regime      String?
+  payloadJson String
+  createdAt   DateTime @default(now())
+
+  @@unique([sessionId, day])
+}

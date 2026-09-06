@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>NIFTY 50 OR Sensex - Google News</title>
+    <link>https://news.google.com/rss/search?q=NIFTY+50+OR+Sensex+when:2d&amp;hl=en-IN&amp;gl=IN&amp;ceid=IN:en</link>
+    <description>Google News</description>
+    <item>
+      <title>Sensex jumps 750 points as RBI holds rates steady - Economic Times</title>
+      <link>https://economictimes.indiatimes.com/markets/stocks/liveblog/sensex-jumps-750-points/story-1</link>
+      <guid>https://economictimes.indiatimes.com/markets/stocks/liveblog/sensex-jumps-750-points/story-1</guid>
+      <pubDate>Mon, 07 Sep 2026 09:30:00 GMT</pubDate>
+      <description>&lt;a href="..."&gt;Benchmark indices rallied after the MPC kept the repo rate at 6.25%.&lt;/a&gt;</description>
+      <source url="https://economictimes.indiatimes.com">Economic Times</source>
+    </item>
+    <item>
+      <title>FPIs sell ₹3,400 Cr in Indian equities as global yields spike - Mint</title>
+      <link>https://www.livemint.com/markets/fpis-sell-3400-cr-equities/story-2</link>
+      <guid>https://www.livemint.com/markets/fpis-sell-3400-cr-equities/story-2</guid>
+      <pubDate>Tue, 08 Sep 2026 10:15:00 GMT</pubDate>
+      <description>FPI outflow continues for the fourth session.</description>
+      <source url="https://www.livemint.com">Mint</source>
+    </item>
+    <item>
+      <title>Rupee slides to lifetime low of 94.80 per dollar</title>
+      <link>https://www.business-standard.com/markets/currency/rupee-lifetime-low/story-3</link>
+      <guid>https://www.business-standard.com/markets/currency/rupee-lifetime-low/story-3</guid>
+      <pubDate>Tue, 08 Sep 2026 11:00:00 GMT</pubDate>
+      <source url="https://www.business-standard.com">Business Standard</source>
+    </item>
+    <item>
+      <title>India vs Australia cricket: series decider today - Sports Desk</title>
+      <link>https://sports.example.com/cricket/ind-vs-aus/story-4</link>
+      <guid>https://sports.example.com/cricket/ind-vs-aus/story-4</guid>
+      <pubDate>Tue, 08 Sep 2026 08:00:00 GMT</pubDate>
+      <source url="https://sports.example.com">Sports Desk</source>
+    </item>
+  </channel>
+</rss>

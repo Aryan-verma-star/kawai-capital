@@ -1,0 +1,29 @@
+services:
+  kavach:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      # zero-key by default: dictionary radar + optimizer-only proposals
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL: ${GEMINI_MODEL:-gemini-2.5-flash}
+      GNEWS_API_KEY: ${GNEWS_API_KEY:-}
+      MARKETAUX_API_KEY: ${MARKETAUX_API_KEY:-}
+      FINNHUB_API_KEY: ${FINNHUB_API_KEY:-}
+      MAX_AI_CALLS_PER_DAY: ${MAX_AI_CALLS_PER_DAY:-150}
+      DATABASE_URL: ${DATABASE_URL:-file:/app/db/custom.db}
+      CRON_SECRET: ${CRON_SECRET:-}
+    volumes:
+      - ./data:/app/data      # flight-recorder evidence (hash-chained JSONL)
+      - ./db:/app/db          # SQLite operational state
+    restart: unless-stopped
+
+  # 15-minute news poll (replaces Vercel Cron when self-hosting)
+  cron:
+    image: curlimages/curl:latest
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - "while true; do curl -s http://kavach:3000/api/cron/news > /dev/null; sleep 900; done"
+    restart: unless-stopped
+    depends_on:
+      - kavach

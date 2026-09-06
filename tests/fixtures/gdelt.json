@@ -1,0 +1,25 @@
+{
+  "articles": [
+    {
+      "url": "https://www.thehindubusinessline.com/markets/nbfc-spreads-widen/article-101/",
+      "title": "NBFC funding stress deepens as spreads widen 60 basis points",
+      "seendate": "20260907T053000Z",
+      "domain": "thehindubusinessline.com",
+      "language": "English",
+      "sourcecountry": "India"
+    },
+    {
+      "url": "https://www.thehindubusinessline.com/economy/rbi-omo-announcement/article-102/",
+      "title": "RBI announces ₹40,000 Cr OMO to calm bond markets",
+      "seendate": "20260907T080000Z",
+      "domain": "thehindubusinessline.com",
+      "language": "English",
+      "sourcecountry": "India"
+    },
+    {
+      "url": "https://example-missing-title.com/article-103/",
+      "seendate": "20260907T090000Z",
+      "domain": "example-missing-title.com"
+    }
+  ]
+}

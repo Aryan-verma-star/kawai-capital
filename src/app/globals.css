@@ -1,0 +1,244 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * KAVACH — design tokens ("a calm quant desk terminal").
+ * Background near-black #09090B; raised surfaces #101013; hairline borders
+ * 1px #1F1F23 (ONE border weight). ONE accent: amber #F5A623 — AI/highlight
+ * moments only. Semantic color only where money moves: gains #10B981,
+ * losses #EF4444. Exactly two type families: Geist Sans (UI) + Geist Mono
+ * (every number that can change — tabular-nums so numerals never jitter).
+ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-success: var(--success);
+  --color-gain: var(--gain);
+  --color-loss: var(--loss);
+  --color-hairline: var(--hairline);
+  --color-surface: var(--surface);
+  --color-kavach: var(--kavach);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root,
+.dark {
+  --radius: 0.25rem; /* terminals are square */
+  --background: #09090b;
+  --foreground: #fafafa;
+  --card: #101013;
+  --card-foreground: #fafafa;
+  --popover: #131317;
+  --popover-foreground: #fafafa;
+  --primary: #f5a623; /* the one accent: amber */
+  --primary-foreground: #09090b;
+  --secondary: #1b1b1f;
+  --secondary-foreground: #d4d4d8;
+  --muted: #161619;
+  --muted-foreground: #8b8b93;
+  --accent: #1c1710; /* dim amber wash for hovers — still one hue */
+  --accent-foreground: #f5c069;
+  --destructive: #ef4444;
+  --success: #10b981;
+  --gain: #10b981; /* money moves up */
+  --loss: #ef4444; /* money moves down */
+  --hairline: #1f1f23; /* the ONE border weight */
+  --surface: #101013;
+  --kavach: #f5a623;
+  --border: #1f1f23;
+  --input: #1f1f23;
+  --ring: rgba(245, 166, 35, 0.5);
+  --chart-1: #f5f5f5; /* governed NAV — zinc-100, solid */
+  --chart-2: #ef4444; /* naive NAV — red, dashed */
+  --chart-3: #f5a623; /* AI moments */
+  --chart-4: #10b981; /* gains */
+  --chart-5: #52525b; /* gridlines / muted */
+  --sidebar: #101013;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #f5a623;
+  --sidebar-primary-foreground: #09090b;
+  --sidebar-accent: #1c1710;
+  --sidebar-accent-foreground: #f5c069;
+  --sidebar-border: #1f1f23;
+  --sidebar-ring: rgba(245, 166, 35, 0.5);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "ss01";
+  }
+  ::selection {
+    background: rgba(245, 166, 35, 0.28);
+  }
+  /* Keyboard navigation: amber focus ring, 1px, never a glow. */
+  :focus-visible {
+    outline: 1px solid rgba(245, 166, 35, 0.7);
+    outline-offset: 1px;
+  }
+}
+
+/* Terminal scrollbar: thin, zinc, unobtrusive (lists stay readable). */
+@layer utilities {
+  .scrollbar-terminal {
+    scrollbar-width: thin;
+    scrollbar-color: #2a2a30 transparent;
+  }
+  .scrollbar-terminal::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-terminal::-webkit-scrollbar-thumb {
+    background: #2a2a30;
+    border-radius: 0;
+  }
+  .scrollbar-terminal::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  /* Section label: 11px uppercase, tracked wide, zinc-500. */
+  .section-label {
+    @apply text-[11px] font-medium uppercase tracking-wider text-zinc-500;
+  }
+  /* Numerals that can change: mono + tabular — never jitter. */
+  .num {
+    @apply font-mono tabular-nums;
+  }
+  /* Hairline dividers. */
+  .hairline-t {
+    border-top: 1px solid var(--hairline);
+  }
+  .hairline-b {
+    border-bottom: 1px solid var(--hairline);
+  }
+  /* Left accent edge for the active scenario / AI-origin rows. */
+  .edge-active {
+    box-shadow: inset 2px 0 0 var(--kavach);
+  }
+  /* Data crossfade (≤120 ms). */
+  .crossfade {
+    transition: opacity 120ms ease-out;
+  }
+  /* Skeleton shimmer: barely-there pulse, same layout as the final table. */
+  .skeleton-row {
+    @apply animate-pulse;
+    animation-duration: 1.6s;
+    background: #141417;
+  }
+  /* Keyboard hint chip: mono, hairline, quiet. */
+  .kbd {
+    @apply border border-[#26262b] bg-[#131317] px-1 text-[10px] leading-4 text-zinc-500 font-mono tabular-nums;
+  }
+}
+
+/* Toast: 150 ms slide-and-fade, state changes only, never decorative. */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 6px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+.toast-in {
+  animation: toast-in 150ms ease-out;
+}
+
+/* Palette: same treatment — 120 ms, state only. */
+@keyframes palette-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -4px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+.palette-in {
+  animation: palette-in 120ms ease-out;
+}
+
+/* Drawer (radar detail): 150 ms slide from the right, state only. */
+@keyframes drawer-in {
+  from {
+    transform: translateX(12px);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.drawer-in {
+  animation: drawer-in 150ms ease-out;
+}
+
+/* Value flash: a moving number pulses amber once (650 ms), then settles.
+   Quiet enough to read as a tick on a terminal, never decorative. */
+@keyframes flash-num {
+  0% {
+    color: #f5c069;
+  }
+  55% {
+    color: #f5c069;
+  }
+  100% {
+    color: currentColor;
+  }
+}
+.flash-num {
+  animation: flash-num 650ms ease-out 1;
+}
+
+/* Accessibility: users who ask for less motion get less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
